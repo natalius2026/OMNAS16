@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>OMNAS 16 (2026) - SD Kristen Petra 5 Participants</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-purple: #c084fc;
+            --accent-amber: #fbbf24;
+            --table-hover: rgba(255, 255, 255, 0.04);
+            --table-border: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(192, 132, 252, 0.15) 0%, transparent 45%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 1rem 0.85rem calc(1.5rem + env(safe-area-inset-bottom)) 0.85rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Banner Container */
+        .banner-container {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto 1.25rem auto;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+            background: var(--card-bg);
+            aspect-ratio: 1080 / 406; /* Preserves exact aspect ratio to prevent layout shifts */
+        }
+
+        .banner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            /* Anti-aliasing for crisp mobile rendering */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem 1rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 0.2rem 0.65rem;
+            border-radius: 9999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .badge-purple {
+            background: rgba(192, 132, 252, 0.12);
+            color: var(--accent-purple);
+            border-color: rgba(192, 132, 252, 0.25);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.4rem, 5vw, 2.3rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.35rem;
+            line-height: 1.25;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Metrics Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 0.1rem;
+            line-height: 1.2;
+        }
+
+        .stat-value.blue { color: var(--accent-blue); }
+        .stat-value.purple { color: var(--accent-purple); }
+        .stat-value.amber { color: var(--accent-amber); }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 16px; /* Prevents auto-zoom on iOS */
+            outline: none;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.95rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Room Sections & Mobile Table Scroll */
+        .room-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .room-header {
+            padding: 0.85rem 1.1rem;
+            background: rgba(15, 23, 42, 0.7);
+            border-bottom: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .room-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .level-tag {
+            font-size: 0.68rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .level-1 { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+        .level-2 { background: rgba(192, 132, 252, 0.15); color: var(--accent-purple); }
+        .level-3 { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
+
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            min-width: 520px;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--table-border);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--table-border);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:active {
+            background-color: var(--table-hover);
+        }
+
+        .peserta-id {
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.82rem;
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .school-name {
+            color: var(--text-secondary);
+            font-size: 0.82rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-secondary);
+            display: none;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Crisp Banner Container -->
+    <div class="banner-container">
+        <!-- 
+            TO REPLACE THIS PLACEHOLDER:
+            Change src="banner.png" to point to your image file in the GitHub repository.
+        -->
+        <img 
+            src="banner.png" 
+            alt="OMNAS 16 Banner" 
+            class="banner-img"
+            width="1080"
+            height="406"
+        >
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="badge-container">
+            <span class="badge">OMNAS 16 (2026)</span>
+            <span class="badge badge-purple">Penyisihan Surabaya</span>
+        </div>
+        <h1>SD Kristen Petra 5 Surabaya</h1>
+        <p class="subtitle">Participant roster by room & level</p>
+    </header>
+
+    <!-- Metrics Summary -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-label">Students</span>
+            <span class="stat-value blue">30</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Subject</span>
+            <span class="stat-value">English</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Rooms</span>
+            <span class="stat-value purple">9 Rooms</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Levels</span>
+            <span class="stat-value amber">Level 1–3</span>
+        </div>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-container">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search student name, ID, or room..." onkeyup="filterData()">
+    </div>
+
+    <div id="noResults" class="no-results">
+        <p>No matching participants found.</p>
+    </div>
+
+    <!-- Room 1 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 1 <span class="level-tag level-1">Level 1</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">5 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>14</td><td><span class="peserta-id">163121015</span></td><td><strong>CHRISTOFF GAVRIEL SUGIARTO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr><td>15</td><td><span class="peserta-id">163121016</span></td><td><strong>CLARISSA ESTHER HARSONO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr><td>16</td><td><span class="peserta-id">163121017</span></td><td><strong>DARREN REINALDO TANUMIDJAJA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>19</td><td><span class="peserta-id">163121020</span></td><td><strong>ELIZABETH MICHELLE WIDJAJA</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr><td>27</td><td><span class="peserta-id">163121028</span></td><td><strong>JONAH MANOLO TANUWIDJAJA</strong></td><td><span class="school-name">SD KR. PETRA 5 SURABAYA</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 2 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 2 <span class="level-tag level-1">Level 1</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">2 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>17</td><td><span class="peserta-id">163121047</span></td><td><strong>RYAN KENZO THENARYO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                    <tr><td>20</td><td><span class="peserta-id">163121050</span></td><td><strong>SHINE JOSEPHINE CHRISTIANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 3 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 3 <span class="level-tag level-2">Level 2</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">4 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>7</td><td><span class="peserta-id">163221014</span></td><td><strong>ALINE CARLISSA CHANDRA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>9</td><td><span class="peserta-id">163221016</span></td><td><strong>ANNA RICHELLE VANANTA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>27</td><td><span class="peserta-id">163221034</span></td><td><strong>CALISTA EDELINE K</strong></td><td><span class="school-name">SD PETRA 5 SURABAYA</span></td></tr>
+                    <tr><td>28</td><td><span class="peserta-id">163221035</span></td><td><strong>CHERYL BELLVANIA SUGIARTO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 4 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 4 <span class="level-tag level-2">Level 2</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">2 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>5</td><td><span class="peserta-id">163221042</span></td><td><strong>DARREN TJANDRA HERIJANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>23</td><td><span class="peserta-id">163221060</span></td><td><strong>JOLENE CALLYSTA YUWONO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 5 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 5 <span class="level-tag level-2">Level 2</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">3 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>3</td><td><span class="peserta-id">163221070</span></td><td><strong>MICHELLE JOYCELYN T</strong></td><td><span class="school-name">SDK PETRA 5</span></td></tr>
+                    <tr><td>14</td><td><span class="peserta-id">163221081</span></td><td><strong>NATHANAEL JAYDEN WONG</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                    <tr><td>26</td><td><span class="peserta-id">163221093</span></td><td><strong>RUBY BASUKI</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 6 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 6 <span class="level-tag level-2">Level 2</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">2 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>6</td><td><span class="peserta-id">163221103</span></td><td><strong>VICTORIA CHELSEA TEDJAMULIA</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr><td>7</td><td><span class="peserta-id">163221104</span></td><td><strong>WILLIAM KEITARO THENARYO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 7 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 7 <span class="level-tag level-3">Level 3</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">2 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>9</td><td><span class="peserta-id">163321026</span></td><td><strong>CAITLIN ANNABELLE TANTRAWIRAWAN</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>20</td><td><span class="peserta-id">163321037</span></td><td><strong>EVANDER SEAN IRAWAN</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 8 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 8 <span class="level-tag level-3">Level 3</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">7 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>3</td><td><span class="peserta-id">163321050</span></td><td><strong>ISAAC BILLION CHANDRASA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>4</td><td><span class="peserta-id">163321051</span></td><td><strong>JACE REINHART LAUW</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>5</td><td><span class="peserta-id">163321052</span></td><td><strong>JEREMY CHRISTIAN GUNAWAN</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>7</td><td><span class="peserta-id">163321054</span></td><td><strong>JETHRO MANUEL TANUWIDJAJA</strong></td><td><span class="school-name">SD KR. PETRA 5 SURABAYA</span></td></tr>
+                    <tr><td>9</td><td><span class="peserta-id">163321056</span></td><td><strong>JOHN SEBASTIAN NYO</strong></td><td><span class="school-name">SDK PETRA 5</span></td></tr>
+                    <tr><td>19</td><td><span class="peserta-id">163321066</span></td><td><strong>KENZO EFFENDY</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>27</td><td><span class="peserta-id">163321074</span></td><td><strong>MAXX MILAN SUGIHARTO</strong></td><td><span class="school-name">SDK PETRA5</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Room 9 -->
+    <div class="room-card search-item">
+        <div class="room-header">
+            <div class="room-title">Ruang 9 <span class="level-tag level-3">Level 3</span></div>
+            <span style="color: var(--text-secondary); font-size: 0.8rem;">3 Students</span>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">No.</th>
+                        <th style="width: 25%;">No. Peserta</th>
+                        <th style="width: 42%;">Nama Student</th>
+                        <th style="width: 25%;">Sekolah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>6</td><td><span class="peserta-id">163321083</span></td><td><strong>NATHAN NJOTOPRAJITNO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr><td>18</td><td><span class="peserta-id">163321095</span></td><td><strong>SAM BEZALIEL CHRISTIANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr><td>27</td><td><span class="peserta-id">163321104</span></td><td><strong>VICTORIA GRACE LI</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>OMNAS 16 (2026) • SD Kristen Petra 5 Surabaya</p>
+    </footer>
+</div>
+
+<script>
+    function filterData() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.search-item');
+        let visibleCardCount = 0;
+
+        cards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            if (text.includes(input)) {
+                card.style.display = "";
+                visibleCardCount++;
+                
+                const rows = card.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase();
+                    if (input === "" || rowText.includes(input) || card.querySelector('.room-title').textContent.toLowerCase().includes(input)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        const noResults = document.getElementById('noResults');
+        noResults.style.display = visibleCardCount === 0 ? "block" : "none";
+    }
+</script>
+
+</body>
+</html>
