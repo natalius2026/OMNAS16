@@ -17,6 +17,8 @@
             --accent-blue: #38bdf8;
             --accent-purple: #c084fc;
             --accent-amber: #fbbf24;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
             --table-hover: rgba(255, 255, 255, 0.04);
             --table-border: rgba(255, 255, 255, 0.06);
         }
@@ -46,7 +48,7 @@
             margin: 0 auto;
         }
 
-        /* Responsive Banner Container */
+        /* Banner Container */
         .banner-container {
             width: 100%;
             max-width: 1080px;
@@ -56,7 +58,7 @@
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
             background: var(--card-bg);
-            aspect-ratio: 1080 / 406; /* Preserves exact aspect ratio to prevent layout shifts */
+            aspect-ratio: 1080 / 406;
         }
 
         .banner-img {
@@ -64,7 +66,6 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            /* Anti-aliasing for crisp mobile rendering */
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
         }
@@ -173,8 +174,9 @@
         }
 
         .stat-value.blue { color: var(--accent-blue); }
-        .stat-value.purple { color: var(--accent-purple); }
+        .stat-value.green { color: var(--accent-green); }
         .stat-value.amber { color: var(--accent-amber); }
+        .stat-value.purple { color: var(--accent-purple); }
 
         /* Search Bar */
         .search-container {
@@ -189,7 +191,7 @@
             border: 1px solid var(--card-border);
             border-radius: 14px;
             color: var(--text-primary);
-            font-size: 16px; /* Prevents auto-zoom on iOS */
+            font-size: 16px;
             outline: none;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -261,7 +263,7 @@
 
         table {
             width: 100%;
-            min-width: 520px;
+            min-width: 620px;
             border-collapse: collapse;
             text-align: left;
             font-size: 0.88rem;
@@ -308,6 +310,64 @@
             font-size: 0.82rem;
         }
 
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .btn-status {
+            padding: 0.3rem 0.65rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .btn-status:active {
+            transform: scale(0.96);
+        }
+
+        /* Arrived active state */
+        .btn-status.arrived {
+            background: rgba(52, 211, 153, 0.2);
+            color: var(--accent-green);
+            border-color: rgba(52, 211, 153, 0.4);
+        }
+
+        /* Finished active state */
+        .btn-status.finished {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--accent-amber);
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        .reset-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .btn-reset {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-red);
+            border: 1px solid rgba(248, 113, 113, 0.25);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset:active {
+            transform: scale(0.96);
+        }
+
         footer {
             text-align: center;
             padding: 1.5rem 0;
@@ -333,12 +393,8 @@
 
     <!-- Crisp Banner Container -->
     <div class="banner-container">
-        <!-- 
-            TO REPLACE THIS PLACEHOLDER:
-            Change src="banner.png" to point to your image file in the GitHub repository.
-        -->
         <img 
-            src="banner.png" 
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='406' viewBox='0 0 1080 406'><rect width='1080' height='406' fill='%231e293b'/><text x='50%25' y='45%25' dominant-baseline='middle' text-anchor='middle' fill='%2338bdf8' font-family='sans-serif' font-size='38' font-weight='bold'>OMNAS 16 (2026)</text><text x='50%25' y='58%25' dominant-baseline='middle' text-anchor='middle' fill='%2394a3b8' font-family='sans-serif' font-size='22'>SD Kristen Petra 5 Surabaya Roster</text></svg>" 
             alt="OMNAS 16 Banner" 
             class="banner-img"
             width="1080"
@@ -353,26 +409,26 @@
             <span class="badge badge-purple">Penyisihan Surabaya</span>
         </div>
         <h1>SD Kristen Petra 5 Surabaya</h1>
-        <p class="subtitle">Participant roster by room & level</p>
+        <p class="subtitle">Real-Time Arrival & Competition Status Tracker</p>
     </header>
 
     <!-- Metrics Summary -->
     <div class="stats-grid">
         <div class="stat-card">
-            <span class="stat-label">Students</span>
-            <span class="stat-value blue">30</span>
+            <span class="stat-label">Total Students</span>
+            <span class="stat-value blue" id="countTotal">30</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Subject</span>
-            <span class="stat-value">English</span>
+            <span class="stat-label">Tiba (Arrived)</span>
+            <span class="stat-value green" id="countArrived">0</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Rooms</span>
-            <span class="stat-value purple">9 Rooms</span>
+            <span class="stat-label">Sedang Lomba</span>
+            <span class="stat-value purple" id="countInProgress">0</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Levels</span>
-            <span class="stat-value amber">Level 1–3</span>
+            <span class="stat-label">Selesai (Finished)</span>
+            <span class="stat-value amber" id="countFinished">0</span>
         </div>
     </div>
 
@@ -398,18 +454,19 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>14</td><td><span class="peserta-id">163121015</span></td><td><strong>CHRISTOFF GAVRIEL SUGIARTO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
-                    <tr><td>15</td><td><span class="peserta-id">163121016</span></td><td><strong>CLARISSA ESTHER HARSONO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
-                    <tr><td>16</td><td><span class="peserta-id">163121017</span></td><td><strong>DARREN REINALDO TANUMIDJAJA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>19</td><td><span class="peserta-id">163121020</span></td><td><strong>ELIZABETH MICHELLE WIDJAJA</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
-                    <tr><td>27</td><td><span class="peserta-id">163121028</span></td><td><strong>JONAH MANOLO TANUWIDJAJA</strong></td><td><span class="school-name">SD KR. PETRA 5 SURABAYA</span></td></tr>
+                    <tr data-id="163121015"><td>14</td><td><span class="peserta-id">163121015</span></td><td><strong>CHRISTOFF GAVRIEL SUGIARTO</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121015', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121015', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163121016"><td>15</td><td><span class="peserta-id">163121016</span></td><td><strong>CLARISSA ESTHER HARSONO</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121016', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121016', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163121017"><td>16</td><td><span class="peserta-id">163121017</span></td><td><strong>DARREN REINALDO TANUMIDJAJA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121017', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121017', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163121020"><td>19</td><td><span class="peserta-id">163121020</span></td><td><strong>ELIZABETH MICHELLE WIDJAJA</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121020', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121020', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163121028"><td>27</td><td><span class="peserta-id">163121028</span></td><td><strong>JONAH MANOLO TANUWIDJAJA</strong></td><td><span class="school-name">SD KR. PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121028', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121028', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -425,15 +482,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>17</td><td><span class="peserta-id">163121047</span></td><td><strong>RYAN KENZO THENARYO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
-                    <tr><td>20</td><td><span class="peserta-id">163121050</span></td><td><strong>SHINE JOSEPHINE CHRISTIANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr data-id="163121047"><td>17</td><td><span class="peserta-id">163121047</span></td><td><strong>RYAN KENZO THENARYO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121047', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121047', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163121050"><td>20</td><td><span class="peserta-id">163121050</span></td><td><strong>SHINE JOSEPHINE CHRISTIANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163121050', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163121050', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -449,17 +507,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>7</td><td><span class="peserta-id">163221014</span></td><td><strong>ALINE CARLISSA CHANDRA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>9</td><td><span class="peserta-id">163221016</span></td><td><strong>ANNA RICHELLE VANANTA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>27</td><td><span class="peserta-id">163221034</span></td><td><strong>CALISTA EDELINE K</strong></td><td><span class="school-name">SD PETRA 5 SURABAYA</span></td></tr>
-                    <tr><td>28</td><td><span class="peserta-id">163221035</span></td><td><strong>CHERYL BELLVANIA SUGIARTO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr data-id="163221014"><td>7</td><td><span class="peserta-id">163221014</span></td><td><strong>ALINE CARLISSA CHANDRA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221014', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221014', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221016"><td>9</td><td><span class="peserta-id">163221016</span></td><td><strong>ANNA RICHELLE VANANTA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221016', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221016', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221034"><td>27</td><td><span class="peserta-id">163221034</span></td><td><strong>CALISTA EDELINE K</strong></td><td><span class="school-name">SD PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221034', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221034', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221035"><td>28</td><td><span class="peserta-id">163221035</span></td><td><strong>CHERYL BELLVANIA SUGIARTO</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221035', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221035', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -475,15 +534,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>5</td><td><span class="peserta-id">163221042</span></td><td><strong>DARREN TJANDRA HERIJANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>23</td><td><span class="peserta-id">163221060</span></td><td><strong>JOLENE CALLYSTA YUWONO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                    <tr data-id="163221042"><td>5</td><td><span class="peserta-id">163221042</span></td><td><strong>DARREN TJANDRA HERIJANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221042', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221042', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221060"><td>23</td><td><span class="peserta-id">163221060</span></td><td><strong>JOLENE CALLYSTA YUWONO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221060', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221060', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -499,16 +559,17 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>3</td><td><span class="peserta-id">163221070</span></td><td><strong>MICHELLE JOYCELYN T</strong></td><td><span class="school-name">SDK PETRA 5</span></td></tr>
-                    <tr><td>14</td><td><span class="peserta-id">163221081</span></td><td><strong>NATHANAEL JAYDEN WONG</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
-                    <tr><td>26</td><td><span class="peserta-id">163221093</span></td><td><strong>RUBY BASUKI</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                    <tr data-id="163221070"><td>3</td><td><span class="peserta-id">163221070</span></td><td><strong>MICHELLE JOYCELYN T</strong></td><td><span class="school-name">SDK PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221070', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221070', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221081"><td>14</td><td><span class="peserta-id">163221081</span></td><td><strong>NATHANAEL JAYDEN WONG</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221081', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221081', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221093"><td>26</td><td><span class="peserta-id">163221093</span></td><td><strong>RUBY BASUKI</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221093', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221093', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -524,15 +585,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>6</td><td><span class="peserta-id">163221103</span></td><td><strong>VICTORIA CHELSEA TEDJAMULIA</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
-                    <tr><td>7</td><td><span class="peserta-id">163221104</span></td><td><strong>WILLIAM KEITARO THENARYO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td></tr>
+                    <tr data-id="163221103"><td>6</td><td><span class="peserta-id">163221103</span></td><td><strong>VICTORIA CHELSEA TEDJAMULIA</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221103', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221103', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163221104"><td>7</td><td><span class="peserta-id">163221104</span></td><td><strong>WILLIAM KEITARO THENARYO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163221104', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163221104', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -548,15 +610,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>9</td><td><span class="peserta-id">163321026</span></td><td><strong>CAITLIN ANNABELLE TANTRAWIRAWAN</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>20</td><td><span class="peserta-id">163321037</span></td><td><strong>EVANDER SEAN IRAWAN</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
+                    <tr data-id="163321026"><td>9</td><td><span class="peserta-id">163321026</span></td><td><strong>CAITLIN ANNABELLE TANTRAWIRAWAN</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321026', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321026', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321037"><td>20</td><td><span class="peserta-id">163321037</span></td><td><strong>EVANDER SEAN IRAWAN</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321037', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321037', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -572,20 +635,21 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>3</td><td><span class="peserta-id">163321050</span></td><td><strong>ISAAC BILLION CHANDRASA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>4</td><td><span class="peserta-id">163321051</span></td><td><strong>JACE REINHART LAUW</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>5</td><td><span class="peserta-id">163321052</span></td><td><strong>JEREMY CHRISTIAN GUNAWAN</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>7</td><td><span class="peserta-id">163321054</span></td><td><strong>JETHRO MANUEL TANUWIDJAJA</strong></td><td><span class="school-name">SD KR. PETRA 5 SURABAYA</span></td></tr>
-                    <tr><td>9</td><td><span class="peserta-id">163321056</span></td><td><strong>JOHN SEBASTIAN NYO</strong></td><td><span class="school-name">SDK PETRA 5</span></td></tr>
-                    <tr><td>19</td><td><span class="peserta-id">163321066</span></td><td><strong>KENZO EFFENDY</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>27</td><td><span class="peserta-id">163321074</span></td><td><strong>MAXX MILAN SUGIHARTO</strong></td><td><span class="school-name">SDK PETRA5</span></td></tr>
+                    <tr data-id="163321050"><td>3</td><td><span class="peserta-id">163321050</span></td><td><strong>ISAAC BILLION CHANDRASA</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321050', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321050', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321051"><td>4</td><td><span class="peserta-id">163321051</span></td><td><strong>JACE REINHART LAUW</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321051', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321051', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321052"><td>5</td><td><span class="peserta-id">163321052</span></td><td><strong>JEREMY CHRISTIAN GUNAWAN</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321052', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321052', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321054"><td>7</td><td><span class="peserta-id">163321054</span></td><td><strong>JETHRO MANUEL TANUWIDJAJA</strong></td><td><span class="school-name">SD KR. PETRA 5 SURABAYA</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321054', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321054', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321056"><td>9</td><td><span class="peserta-id">163321056</span></td><td><strong>JOHN SEBASTIAN NYO</strong></td><td><span class="school-name">SDK PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321056', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321056', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321066"><td>19</td><td><span class="peserta-id">163321066</span></td><td><strong>KENZO EFFENDY</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321066', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321066', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321074"><td>27</td><td><span class="peserta-id">163321074</span></td><td><strong>MAXX MILAN SUGIHARTO</strong></td><td><span class="school-name">SDK PETRA5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321074', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321074', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
@@ -601,19 +665,25 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 8%;">No.</th>
-                        <th style="width: 25%;">No. Peserta</th>
-                        <th style="width: 42%;">Nama Student</th>
-                        <th style="width: 25%;">Sekolah</th>
+                        <th style="width: 6%;">No.</th>
+                        <th style="width: 20%;">No. Peserta</th>
+                        <th style="width: 38%;">Nama Student</th>
+                        <th style="width: 18%;">Sekolah</th>
+                        <th style="width: 18%;">Status Kehadiran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>6</td><td><span class="peserta-id">163321083</span></td><td><strong>NATHAN NJOTOPRAJITNO</strong></td><td><span class="school-name">SD PETRA 5</span></td></tr>
-                    <tr><td>18</td><td><span class="peserta-id">163321095</span></td><td><strong>SAM BEZALIEL CHRISTIANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
-                    <tr><td>27</td><td><span class="peserta-id">163321104</span></td><td><strong>VICTORIA GRACE LI</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td></tr>
+                    <tr data-id="163321083"><td>6</td><td><span class="peserta-id">163321083</span></td><td><strong>NATHAN NJOTOPRAJITNO</strong></td><td><span class="school-name">SD PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321083', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321083', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321095"><td>18</td><td><span class="peserta-id">163321095</span></td><td><strong>SAM BEZALIEL CHRISTIANTO</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321095', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321095', 'finished')">Selesai</button></div></td></tr>
+                    <tr data-id="163321104"><td>27</td><td><span class="peserta-id">163321104</span></td><td><strong>VICTORIA GRACE LI</strong></td><td><span class="school-name">SD KRISTEN PETRA 5</span></td><td><div class="btn-group"><button class="btn-status btn-arrived" onclick="toggleStatus('163321104', 'arrived')">Tiba</button><button class="btn-status btn-finished" onclick="toggleStatus('163321104', 'finished')">Selesai</button></div></td></tr>
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Reset All Status Button -->
+    <div class="reset-container">
+        <button class="btn-reset" onclick="resetAllStatuses()">Reset All Statuses</button>
     </div>
 
     <!-- Footer -->
@@ -623,6 +693,90 @@
 </div>
 
 <script>
+    // State management using localStorage
+    let attendanceData = JSON.parse(localStorage.getItem('omnas_attendance')) || {};
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyStoredStatuses();
+        updateSummaryCounters();
+    });
+
+    function toggleStatus(studentId, type) {
+        if (!attendanceData[studentId]) {
+            attendanceData[studentId] = { arrived: false, finished: false };
+        }
+
+        if (type === 'arrived') {
+            attendanceData[studentId].arrived = !attendanceData[studentId].arrived;
+            // If turning off 'arrived', also turn off 'finished'
+            if (!attendanceData[studentId].arrived) {
+                attendanceData[studentId].finished = false;
+            }
+        } else if (type === 'finished') {
+            attendanceData[studentId].finished = !attendanceData[studentId].finished;
+            // If marking 'finished', automatically mark 'arrived' as true
+            if (attendanceData[studentId].finished) {
+                attendanceData[studentId].arrived = true;
+            }
+        }
+
+        localStorage.setItem('omnas_attendance', JSON.stringify(attendanceData));
+        applyStoredStatuses();
+        updateSummaryCounters();
+    }
+
+    function applyStoredStatuses() {
+        const rows = document.querySelectorAll('tr[data-id]');
+        rows.forEach(row => {
+            const id = row.getAttribute('data-id');
+            const status = attendanceData[id] || { arrived: false, finished: false };
+            
+            const btnArrived = row.querySelector('.btn-arrived');
+            const btnFinished = row.querySelector('.btn-finished');
+
+            if (status.arrived) {
+                btnArrived.classList.add('arrived');
+                btnArrived.textContent = '✓ Tiba';
+            } else {
+                btnArrived.classList.remove('arrived');
+                btnArrived.textContent = 'Tiba';
+            }
+
+            if (status.finished) {
+                btnFinished.classList.add('finished');
+                btnFinished.textContent = '✓ Selesai';
+            } else {
+                btnFinished.classList.remove('finished');
+                btnFinished.textContent = 'Selesai';
+            }
+        });
+    }
+
+    function updateSummaryCounters() {
+        let arrivedCount = 0;
+        let finishedCount = 0;
+        let inProgressCount = 0;
+
+        Object.values(attendanceData).forEach(status => {
+            if (status.arrived) arrivedCount++;
+            if (status.finished) finishedCount++;
+            if (status.arrived && !status.finished) inProgressCount++;
+        });
+
+        document.getElementById('countArrived').textContent = arrivedCount;
+        document.getElementById('countFinished').textContent = finishedCount;
+        document.getElementById('countInProgress').textContent = inProgressCount;
+    }
+
+    function resetAllStatuses() {
+        if (confirm("Are you sure you want to reset all attendance and completion statuses?")) {
+            attendanceData = {};
+            localStorage.removeItem('omnas_attendance');
+            applyStoredStatuses();
+            updateSummaryCounters();
+        }
+    }
+
     function filterData() {
         const input = document.getElementById('searchInput').value.toLowerCase();
         const cards = document.querySelectorAll('.search-item');
